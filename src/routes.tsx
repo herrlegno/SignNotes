@@ -1,23 +1,23 @@
-import React from "react";
-import { Home, Options } from "./views";
-import { RouteProps } from "react-router";
-import { Redirect } from "react-router-dom";
+import React from 'react';
+import { Home, Options } from './views';
+import { RouteProps } from 'react-router';
+import { Redirect } from 'react-router-dom';
 
 const routes: RouteProps[] = [
   {
-    path: "/options",
+    path: '/options',
     exact: true,
-    component: Options
+    component: Options,
   },
   {
-    path: "/",
+    path: '/',
     exact: true,
-    component: Home
+    component: Home,
   },
   {
-    path: "*",
-    render: () => <Redirect to="/" />
-  }
+    path: '*',
+    render: () => <Redirect to='/' />,
+  },
 ];
 
 export default routes;

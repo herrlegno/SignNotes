@@ -1,7 +1,7 @@
-import { Moment } from "moment";
+import { Moment } from 'moment';
 
-export const SIGN_IN = "SIGN/SIGN_IN";
-export const SIGN_OUT = "SIGN/SIGN_OUT";
+export const SIGN_IN = 'SIGN/SIGN_IN';
+export const SIGN_OUT = 'SIGN/SIGN_OUT';
 
 export interface SignPayload {
   date: Moment;

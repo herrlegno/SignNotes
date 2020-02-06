@@ -1,23 +1,23 @@
-import { SignActionType, SIGN_IN, SIGN_OUT } from "./types";
+import { SignActionType, SIGN_IN, SIGN_OUT } from './types';
 
-import db from "@app/config/db";
+import db from '@app/config/db';
 
 const signReducer = (state = {}, action: SignActionType) => {
   switch (action.type) {
     case SIGN_IN: {
       const {
-        payload: { date }
+        payload: { date },
       } = action;
-      const formatDate = date.format("d-MM-YYYY");
+      const formatDate = date.format('d-MM-YYYY');
 
       db.signings
         .add({
           date: formatDate,
-          in: date.toDate()
+          in: date.toDate(),
         })
         .catch(() => {
           db.signings.update(formatDate, {
-            in: date.toDate()
+            in: date.toDate(),
           });
         });
       return state;
@@ -25,18 +25,18 @@ const signReducer = (state = {}, action: SignActionType) => {
 
     case SIGN_OUT: {
       const {
-        payload: { date }
+        payload: { date },
       } = action;
-      const formatDate = date.format("d-MM-YYYY");
+      const formatDate = date.format('d-MM-YYYY');
 
       db.signings
         .add({
           date: formatDate,
-          out: date.toDate()
+          out: date.toDate(),
         })
         .catch(() => {
           db.signings.update(formatDate, {
-            out: date.toDate()
+            out: date.toDate(),
           });
         });
       return state;
