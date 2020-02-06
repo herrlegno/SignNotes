@@ -1,6 +1,6 @@
 import { SignActionType, SIGN_IN, SIGN_OUT } from "./types";
 
-import db from "db";
+import db from "@app/config/db";
 
 const signReducer = (state = {}, action: SignActionType) => {
   switch (action.type) {

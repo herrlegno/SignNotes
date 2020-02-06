@@ -7,7 +7,7 @@ import {
   Route,
 } from 'react-router-dom';
 import * as serviceWorker from './serviceWorker';
-import store from './store';
+import store from '@app/config/store';
 import routes from './routes';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
