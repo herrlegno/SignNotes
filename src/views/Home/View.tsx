@@ -11,7 +11,7 @@ const HomeView: React.FunctionComponent = () => {
   const date = moment();
   const monthName = date.format('MMMM');
   return (
-    <Container className='pt-4 pb-4'>
+    <Container className='pt-4 pb-4' bsPrefix='container-md'>
       <Row className='justify-content-md-center'>
         <Col xs>
           <div className='d-flex border-bottom pb-2 align-items-center justify-content-between'>
