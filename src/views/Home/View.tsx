@@ -4,12 +4,16 @@ import { Container, Row, Col } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCog } from '@fortawesome/free-solid-svg-icons';
 import moment from '@app/config/moment';
+import { useSelector } from 'react-redux';
+import { RootState } from '@app/reducers';
+
 import styles from './styles.module.css';
 import { Calendar } from '@app/components';
 
 const HomeView: React.FunctionComponent = () => {
-  const date = moment();
-  const monthName = date.format('MMMM');
+  const date = useSelector((state: RootState) => state.date);
+  const momentDate = moment(date);
+  const monthName = momentDate.format('MMMM');
   return (
     <Container className='pt-4 pb-4' bsPrefix='container-md'>
       <Row className='justify-content-md-center'>
@@ -24,7 +28,7 @@ const HomeView: React.FunctionComponent = () => {
         </Col>
       </Row>
       <Row>
-        <Calendar month={date.month()} />
+        <Calendar />
       </Row>
     </Container>
   );

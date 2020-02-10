@@ -3,22 +3,34 @@ import { Container } from 'react-bootstrap';
 import moment from '@app/config/moment';
 import classNames from 'classnames';
 import { DayCell } from '@app/components';
+import { nextMonth, prevMonth } from '@app/reducers/month/actions';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useSelector } from 'react-redux';
+import { RootState } from '@app/reducers';
+import {
+  faChevronLeft,
+  faChevronRight,
+} from '@fortawesome/free-solid-svg-icons';
+import { useDispatch } from 'react-redux';
 import { useMediaQuery } from '@app/hooks';
-import { CalendarProps } from './index.d';
 import styles from './styles.module.css';
 
-const Calendar: React.FC<CalendarProps> = ({ month }) => {
+const Calendar: React.FC = () => {
   const { mobile } = useMediaQuery();
+  const dispatch = useDispatch();
+  const date = useSelector((state: RootState) => state.date);
 
-  function obtainDays(month: number) {
-    const calendarStart = moment()
-      .month(month)
-      .startOf('month')
-      .startOf('week');
-    const calendarEnd = moment()
-      .month(month)
-      .endOf('month')
-      .endOf('week');
+  const handleNextMonth = () => dispatch(nextMonth());
+  const handlePrevMonth = () => dispatch(prevMonth());
+
+  function obtainDays() {
+    const calendarStart = moment(date).startOf('month');
+    const calendarEnd = moment(date).endOf('month');
+
+    if (!mobile) {
+      calendarStart.startOf('week');
+      calendarEnd.endOf('week');
+    }
 
     const days = [];
 
@@ -27,57 +39,57 @@ const Calendar: React.FC<CalendarProps> = ({ month }) => {
       i <= calendarEnd;
       i.add(1, 'd')
     ) {
-      days.push(moment(i));
+      days.push(i.clone());
     }
 
     return days;
   }
 
-  const daysNames = moment.weekdays(true);
-
-  const days = obtainDays(month);
-
-  const weeksCount = days.length / 7;
+  const days = obtainDays();
 
   return (
     <Container className='mt-3' bsPrefix='container-md'>
       <div
         className={classNames({
-          [styles.calendarGrid]: !mobile,
+          [styles.controlsGrid]: !mobile,
         })}
       >
-        {daysNames.map((day, index) => (
-          <div
-            key={day}
-            className={classNames(
-              styles.day,
-              'border-bottom border-right text-center',
-              {
-                'border-right-0': index === daysNames.length - 1,
-              },
-            )}
-          >
-            {day}
-          </div>
-        ))}
-        {[...Array(weeksCount)].map((_, weekIndex) =>
-          [...Array(7)].map((__, dayIndex) => {
-            const day = days[weekIndex * 7 + dayIndex];
-            return (
-              <div
-                key={day.format('DD-MM-YYYY')}
-                className={classNames(
-                  'border-bottom border-right text-center',
-                  {
-                    'border-left': dayIndex === 0,
-                  },
-                )}
-              >
-                <DayCell day={day} month={month} />
-              </div>
-            );
-          }),
-        )}
+        <button
+          className={styles.controlButton}
+          onClick={handlePrevMonth}
+        >
+          <FontAwesomeIcon icon={faChevronLeft} size='2x' />
+          {mobile && 'Mes anterior'}
+        </button>
+        <div
+          className={classNames({
+            [styles.calendarGrid]: !mobile,
+          })}
+        >
+          {days.map((day, dayIndex) => (
+            <div
+              key={day.format('DD-MM-YYYY')}
+              className={classNames(
+                'border-bottom border-right text-center',
+                {
+                  'border-left': !(dayIndex % 7) || mobile,
+                  'border-top':
+                    (mobile && dayIndex === 0) ||
+                    (dayIndex < 7 && !mobile),
+                },
+              )}
+            >
+              <DayCell day={day} />
+            </div>
+          ))}
+        </div>
+        <button
+          className={styles.controlButton}
+          onClick={handleNextMonth}
+        >
+          {mobile && 'Siguiente mes'}
+          <FontAwesomeIcon icon={faChevronRight} size='2x' />
+        </button>
       </div>
     </Container>
   );
