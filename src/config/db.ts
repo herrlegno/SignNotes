@@ -2,8 +2,8 @@ import Dexie from 'dexie';
 
 export interface Signature {
   date: string;
-  in?: Date;
-  out?: Date;
+  in?: number;
+  out?: number;
 }
 
 class SigningDatabase extends Dexie {

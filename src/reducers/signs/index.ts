@@ -13,11 +13,11 @@ const signReducer = (state = {}, action: SignActionType) => {
       db.signings
         .add({
           date: formatDate,
-          in: date.toDate(),
+          in: date.valueOf(),
         })
         .catch(() => {
           db.signings.update(formatDate, {
-            in: date.toDate(),
+            in: date.valueOf(),
           });
         });
       return state;
@@ -32,11 +32,11 @@ const signReducer = (state = {}, action: SignActionType) => {
       db.signings
         .add({
           date: formatDate,
-          out: date.toDate(),
+          out: date.valueOf(),
         })
         .catch(() => {
           db.signings.update(formatDate, {
-            out: date.toDate(),
+            out: date.valueOf(),
           });
         });
       return state;
