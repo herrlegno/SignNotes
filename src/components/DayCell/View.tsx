@@ -18,10 +18,15 @@ import { RootState } from '@app/reducers';
 import { useMediaQuery } from '@app/hooks';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
-import { signIn, signOut } from '@app/reducers/signs/actions';
+import {
+  signIn,
+  signOut,
+  signUpdate,
+} from '@app/reducers/signs/actions';
+import { SignUpdatePayload } from '@app/reducers/signs/types';
 import { useDispatch } from 'react-redux';
 import moment from '@app/config/moment';
-import { DayCellProps } from './index.d';
+import { DayCellProps, FormData } from './index.d';
 import styles from './styles.module.css';
 
 const DayCell: React.FC<DayCellProps> = ({ day, today }) => {
@@ -29,6 +34,12 @@ const DayCell: React.FC<DayCellProps> = ({ day, today }) => {
   const [show, setShow] = useState<boolean>(false);
   const { mobile } = useMediaQuery();
   const dispatch = useDispatch();
+
+  const [formData, setFormData] = useState<FormData>({
+    changed: false,
+    start: undefined,
+    end: undefined,
+  });
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -61,6 +72,44 @@ const DayCell: React.FC<DayCellProps> = ({ day, today }) => {
     dispatch(signOut(signature));
   };
 
+  const handleOnChange = (e: any) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, changed: true, [name]: value });
+  };
+
+  const handleOnSubmit = (e: React.FormEvent) => {
+    if (e.preventDefault) e.preventDefault();
+    const { start, end } = formData;
+
+    if (start || end) {
+      const sign: SignUpdatePayload = {
+        date: day.clone(),
+      };
+
+      if (start) {
+        const startSign = start.split(':').map(i => Number(i));
+        sign['in'] = day.clone().set({
+          hour: startSign[0],
+          minute: startSign[1],
+          second: 0,
+          millisecond: 0,
+        });
+      }
+
+      if (end) {
+        const endSign = end.split(':').map(i => Number(i));
+        sign['out'] = day.clone().set({
+          hour: endSign[0],
+          minute: endSign[1],
+          second: 0,
+          millisecond: 0,
+        });
+      }
+
+      dispatch(signUpdate(sign));
+    }
+  };
+
   const ref = useRef<HTMLButtonElement>(null);
 
   const updateHeight = () => {
@@ -84,6 +133,8 @@ const DayCell: React.FC<DayCellProps> = ({ day, today }) => {
   }, [mobile]);
 
   const disabled = !(months === day.month());
+  const isFormSubmitable =
+    (formData.start || formData.end) && formData.changed;
   const isWeekend = day.day() === 0 || day.day() === 6;
 
   return (
@@ -161,7 +212,10 @@ const DayCell: React.FC<DayCellProps> = ({ day, today }) => {
                 </Accordion.Toggle>
                 <Accordion.Collapse eventKey='0'>
                   <Card.Body>
-                    <Form className={styles.optionForm}>
+                    <Form
+                      className={styles.optionForm}
+                      onSubmit={handleOnSubmit}
+                    >
                       <InputGroup>
                         <InputGroup.Prepend>
                           <InputGroup.Text
@@ -173,13 +227,16 @@ const DayCell: React.FC<DayCellProps> = ({ day, today }) => {
                           </InputGroup.Text>
                         </InputGroup.Prepend>
                         <Form.Control
-                          type='time'
                           id={`input-signin-time-${day.format(
                             'DD-MM-YYYY',
                           )}`}
                           aria-describedby={`label-signin-time-${day.format(
                             'DD-MM-YYYY',
                           )}`}
+                          name='start'
+                          type='time'
+                          value={formData.start}
+                          onChange={handleOnChange}
                         />
                       </InputGroup>
                       <InputGroup>
@@ -193,19 +250,23 @@ const DayCell: React.FC<DayCellProps> = ({ day, today }) => {
                           </InputGroup.Text>
                         </InputGroup.Prepend>
                         <Form.Control
-                          type='time'
                           id={`input-signout-time-${day.format(
                             'DD-MM-YYYY',
                           )}`}
                           aria-describedby={`label-signout-time-${day.format(
                             'DD-MM-YYYY',
                           )}`}
+                          name='end'
+                          type='time'
+                          value={formData.end}
+                          onChange={handleOnChange}
                         />
                       </InputGroup>
                       <Button
                         className={styles.submitButton}
                         variant='primary'
                         type='submit'
+                        disabled={!isFormSubmitable}
                       >
                         Guardar
                       </Button>

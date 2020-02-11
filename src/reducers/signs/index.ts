@@ -3,6 +3,7 @@ import {
   SIGN_IN,
   SIGN_OUT,
   SIGN_INITIALIZATION,
+  SIGN_UPDATE,
 } from './types';
 
 import db from '@app/config/db';
@@ -41,11 +42,8 @@ const signReducer = (
 
       // TODO: handle errors
       let entry = state[formatDate];
-      if (entry) {
-        entry = { ...entry, in: signIn };
-      } else {
-        entry = { in: signIn };
-      }
+      entry = { ...entry, in: signIn };
+
       return { ...state, [formatDate]: entry };
     }
 
@@ -69,11 +67,8 @@ const signReducer = (
 
       // TODO: handle errors
       let entry = state[formatDate];
-      if (entry) {
-        entry = { ...entry, out: signOut };
-      } else {
-        entry = { out: signOut };
-      }
+      entry = { ...entry, out: signOut };
+
       return { ...state, [formatDate]: entry };
     }
 
@@ -86,6 +81,70 @@ const signReducer = (
         };
       });
       return signings;
+    }
+
+    case SIGN_UPDATE: {
+      const {
+        payload: { date, in: signIn, out: signOut },
+      } = action;
+
+      const formatDate = date.format('DD-MM-YYYY');
+
+      if (signIn && signOut) {
+        db.signings
+          .add({
+            date: formatDate,
+            in: signIn.valueOf(),
+            out: signOut.valueOf(),
+          })
+          .catch(() => {
+            db.signings.update(formatDate, {
+              in: signIn.valueOf(),
+              out: signOut.valueOf(),
+            });
+          });
+      } else if (signIn) {
+        db.signings
+          .add({
+            date: formatDate,
+            in: signIn.valueOf(),
+          })
+          .catch(() => {
+            db.signings.update(formatDate, {
+              in: signIn.valueOf(),
+            });
+          });
+      } else if (signOut) {
+        db.signings
+          .add({
+            date: formatDate,
+            out: signOut.valueOf(),
+          })
+          .catch(() => {
+            db.signings.update(formatDate, {
+              out: signOut.valueOf(),
+            });
+          });
+      }
+
+      let entry = state[formatDate];
+
+      if (signIn && signOut) {
+        entry = {
+          ...entry,
+          in: signIn.valueOf(),
+          out: signOut.valueOf(),
+        };
+      } else if (signIn) {
+        entry = {
+          ...entry,
+          in: signIn.valueOf(),
+        };
+      } else if (signOut) {
+        entry = { ...entry, out: signOut.valueOf() };
+      }
+
+      return { ...state, [formatDate]: entry };
     }
 
     default: {

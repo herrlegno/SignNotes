@@ -4,6 +4,8 @@ import {
   SIGN_IN,
   SIGN_OUT,
   SIGN_INITIALIZATION,
+  SignUpdatePayload,
+  SIGN_UPDATE,
 } from './types';
 import db, { Signature } from '@app/config/db';
 import { Dispatch } from 'redux';
@@ -38,5 +40,12 @@ export function getSignatures() {
     return db.signings
       .toArray()
       .then(signatures => dispatch(signInitialization(signatures)));
+  };
+}
+
+export function signUpdate(signature: SignUpdatePayload) {
+  return {
+    type: SIGN_UPDATE,
+    payload: signature,
   };
 }
