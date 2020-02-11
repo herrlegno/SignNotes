@@ -15,14 +15,13 @@ import {
 import classNames from 'classnames';
 import { useSelector } from 'react-redux';
 import { RootState } from '@app/reducers';
-import moment from '@app/config/moment';
 import { useMediaQuery } from '@app/hooks';
 import { DayCellProps } from './index.d';
 import styles from './styles.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 
-const DayCell: React.FC<DayCellProps> = ({ day }) => {
+const DayCell: React.FC<DayCellProps> = ({ day, today }) => {
   const { months } = useSelector((state: RootState) => state.date);
   const [show, setShow] = useState<boolean>(false);
   const { mobile } = useMediaQuery();
@@ -53,7 +52,6 @@ const DayCell: React.FC<DayCellProps> = ({ day }) => {
   }, [mobile]);
 
   const disabled = !(months === day.month());
-  const today = moment();
   const isWeekend = day.day() === 0 || day.day() === 6;
 
   return (
@@ -64,6 +62,7 @@ const DayCell: React.FC<DayCellProps> = ({ day }) => {
           className={classNames(styles.button, styles.date, {
             [styles.active]: !disabled,
             [styles.weekend]: isWeekend,
+            [styles.today]: !mobile && today,
           })}
           onClick={handleShow}
           disabled={disabled}
@@ -94,10 +93,7 @@ const DayCell: React.FC<DayCellProps> = ({ day }) => {
             <div className={styles.beforeSeparator} />
             <div
               className={classNames(styles.separator, {
-                [styles.today]:
-                  today.date() === day.date() &&
-                  today.month() === day.month() &&
-                  today.years() === day.years(),
+                [styles.today]: today,
               })}
             />
             <div className={styles.afterSeparator} />

@@ -46,27 +46,39 @@ const Calendar: React.FC = () => {
   }
 
   const days = obtainDays();
+  const momentDate = moment(date);
+  const today = moment();
 
   return (
     <Container className='mt-3' bsPrefix='container-md'>
-      <div
-        className={classNames({
-          [styles.controlsGrid]: !mobile,
-        })}
-      >
+      <div className={styles.controlsGrid}>
         <button
           className={styles.controlButton}
           onClick={handlePrevMonth}
         >
           <FontAwesomeIcon icon={faChevronLeft} size='2x' />
-          {mobile && 'Mes anterior'}
         </button>
-        <div
-          className={classNames({
-            [styles.calendarGrid]: !mobile,
-          })}
+        <h1 className={styles.month}>
+          {momentDate.format('MMMM YYYY')}
+        </h1>
+        <button
+          className={styles.controlButton}
+          onClick={handleNextMonth}
         >
-          {days.map((day, dayIndex) => (
+          <FontAwesomeIcon icon={faChevronRight} size='2x' />
+        </button>
+      </div>
+      <div
+        className={classNames({
+          [styles.calendarGrid]: !mobile,
+        })}
+      >
+        {days.map((day, dayIndex) => {
+          const isToday =
+            today.date() === day.date() &&
+            today.month() === day.month() &&
+            today.year() === day.year();
+          return (
             <div
               key={day.format('DD-MM-YYYY')}
               className={classNames(
@@ -79,17 +91,10 @@ const Calendar: React.FC = () => {
                 },
               )}
             >
-              <DayCell day={day} />
+              <DayCell day={day} today={isToday} />
             </div>
-          ))}
-        </div>
-        <button
-          className={styles.controlButton}
-          onClick={handleNextMonth}
-        >
-          {mobile && 'Siguiente mes'}
-          <FontAwesomeIcon icon={faChevronRight} size='2x' />
-        </button>
+          );
+        })}
       </div>
     </Container>
   );

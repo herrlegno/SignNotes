@@ -10,8 +10,15 @@
 
 .controlsGrid {
   display: grid;
-  grid-template-columns: min-content auto min-content;
+  grid-template-columns: repeat(3, 1fr);
   grid-gap: 10px;
+  justify-content: center;
+}
+
+.month {
+  text-transform: capitalize;
+  text-align: center;
+  font-size: 32px;
 }
 
 .controlButton {

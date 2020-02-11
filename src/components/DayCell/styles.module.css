@@ -10,6 +10,10 @@
   background-color: white;
 }
 
+.button.today {
+  background-color: #d3f5ff;
+}
+
 .active {
 }
 .active:hover {
@@ -50,6 +54,7 @@
 .separatorContainer {
   display: grid;
   grid-template-rows: 1fr max-content 1fr;
+  grid-template-columns: 7px;
   justify-items: center;
   align-items: center;
   height: 100%;
@@ -63,9 +68,9 @@
 }
 
 .separator.today {
-  height: 5px;
-  width: 5px;
-  background-color: lime;
+  height: 7px;
+  width: 7px;
+  background-color: #d3f5ff;
   border: 1px solid black;
 }
 
