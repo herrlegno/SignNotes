@@ -16,18 +16,50 @@ import classNames from 'classnames';
 import { useSelector } from 'react-redux';
 import { RootState } from '@app/reducers';
 import { useMediaQuery } from '@app/hooks';
-import { DayCellProps } from './index.d';
-import styles from './styles.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
+import { signIn, signOut } from '@app/reducers/signs/actions';
+import { useDispatch } from 'react-redux';
+import moment from '@app/config/moment';
+import { DayCellProps } from './index.d';
+import styles from './styles.module.css';
 
 const DayCell: React.FC<DayCellProps> = ({ day, today }) => {
   const { months } = useSelector((state: RootState) => state.date);
   const [show, setShow] = useState<boolean>(false);
   const { mobile } = useMediaQuery();
+  const dispatch = useDispatch();
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+
+  const handleOnSignIn = () => {
+    const now = moment();
+
+    const signature = {
+      date: now.set({
+        date: day.date(),
+        month: day.month(),
+        year: day.year(),
+      }),
+    };
+
+    dispatch(signIn(signature));
+  };
+
+  const handleOnSignOut = () => {
+    const now = moment();
+
+    const signature = {
+      date: now.set({
+        date: day.date(),
+        month: day.month(),
+        year: day.year(),
+      }),
+    };
+
+    dispatch(signOut(signature));
+  };
 
   const ref = useRef<HTMLButtonElement>(null);
 
@@ -62,6 +94,7 @@ const DayCell: React.FC<DayCellProps> = ({ day, today }) => {
           className={classNames(styles.button, styles.date, {
             [styles.active]: !disabled,
             [styles.weekend]: isWeekend,
+            [styles.disabled]: disabled,
             [styles.today]: !mobile && today,
           })}
           onClick={handleShow}
@@ -83,6 +116,7 @@ const DayCell: React.FC<DayCellProps> = ({ day, today }) => {
             <div
               className={classNames(styles.date, {
                 [styles.weekend]: isWeekend,
+                [styles.weekendMobile]: mobile,
               })}
             >
               {day.format('DD')}
@@ -109,8 +143,12 @@ const DayCell: React.FC<DayCellProps> = ({ day, today }) => {
           <div className='d-flex flex-column align-items-center'>
             <div className={styles.timer}>--:--</div>
             <div className={styles.buttonsGrid}>
-              <Button variant='success'>Llegada</Button>
-              <Button variant='danger'>Salida</Button>
+              <Button variant='success' onClick={handleOnSignIn}>
+                Llegada
+              </Button>
+              <Button variant='danger' onClick={handleOnSignOut}>
+                Salida
+              </Button>
             </div>
             <Accordion className={styles.accordion}>
               <Card>

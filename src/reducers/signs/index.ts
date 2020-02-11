@@ -1,45 +1,91 @@
-import { SignActionType, SIGN_IN, SIGN_OUT } from './types';
+import {
+  SignActionType,
+  SIGN_IN,
+  SIGN_OUT,
+  SIGN_INITIALIZATION,
+} from './types';
 
 import db from '@app/config/db';
 
-const signReducer = (state = {}, action: SignActionType) => {
+interface StateSignature {
+  in?: number;
+  out?: number;
+}
+
+interface StateSignings {
+  [index: string]: StateSignature;
+}
+
+const signReducer = (
+  state: StateSignings = {},
+  action: SignActionType,
+) => {
   switch (action.type) {
     case SIGN_IN: {
       const {
         payload: { date },
       } = action;
-      const formatDate = date.format('d-MM-YYYY');
+      const formatDate = date.format('DD-MM-YYYY');
+      const signIn = date.valueOf();
 
       db.signings
         .add({
           date: formatDate,
-          in: date.valueOf(),
+          in: signIn,
         })
         .catch(() => {
           db.signings.update(formatDate, {
-            in: date.valueOf(),
+            in: signIn,
           });
         });
-      return state;
+
+      // TODO: handle errors
+      let entry = state[formatDate];
+      if (entry) {
+        entry = { ...entry, in: signIn };
+      } else {
+        entry = { in: signIn };
+      }
+      return { ...state, [formatDate]: entry };
     }
 
     case SIGN_OUT: {
       const {
         payload: { date },
       } = action;
-      const formatDate = date.format('d-MM-YYYY');
+      const formatDate = date.format('DD-MM-YYYY');
+      const signOut = date.valueOf();
 
       db.signings
         .add({
           date: formatDate,
-          out: date.valueOf(),
+          out: signOut,
         })
         .catch(() => {
           db.signings.update(formatDate, {
-            out: date.valueOf(),
+            out: signOut,
           });
         });
-      return state;
+
+      // TODO: handle errors
+      let entry = state[formatDate];
+      if (entry) {
+        entry = { ...entry, out: signOut };
+      } else {
+        entry = { out: signOut };
+      }
+      return { ...state, [formatDate]: entry };
+    }
+
+    case SIGN_INITIALIZATION: {
+      const signings: StateSignings = {};
+      action.payload.forEach(signature => {
+        signings[signature.date] = {
+          in: signature.in,
+          out: signature.out,
+        };
+      });
+      return signings;
     }
 
     default: {

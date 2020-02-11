@@ -3,7 +3,7 @@ import signReducer from './signs';
 import monthReducer from './month';
 
 const rootReducer = combineReducers({
-  sign: signReducer,
+  signings: signReducer,
   date: monthReducer,
 });
 

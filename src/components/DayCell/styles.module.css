@@ -36,6 +36,16 @@
 
 .weekend {
   color: #f03d2c;
+  background-color: #eeeeee;
+}
+
+.weekend.disabled {
+  /*color: #c03123;*/
+  color: #aaaaaa;
+}
+
+.weekendMobile {
+  background-color: inherit;
 }
 
 .buttonMobile {
