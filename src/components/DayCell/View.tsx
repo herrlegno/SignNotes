@@ -2,14 +2,12 @@ import React from 'react';
 import classNames from 'classnames';
 import { useSelector } from 'react-redux';
 import { RootState } from '@app/reducers';
-import { useMediaQuery } from '@app/hooks';
 import { DayCellDesktopView, DayCellMobileView } from './views';
 import { DayCellProps } from './index.d';
 import styles from './styles.module.css';
 
-const DayCell: React.FC<DayCellProps> = ({ day, today }) => {
+const DayCell: React.FC<DayCellProps> = ({ day, today, mobile }) => {
   const { months } = useSelector((state: RootState) => state.date);
-  const { mobile } = useMediaQuery();
   const isWeekend = day.day() === 0 || day.day() === 6;
   const disabled = months !== day.month();
 

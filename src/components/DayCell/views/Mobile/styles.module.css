@@ -15,20 +15,29 @@
 }
 
 .button {
+  padding: 0 !important;
   border: none;
   text-decoration: none;
   width: 100%;
-  background-color: white;
+  background-color: white !important;
+  border-radius: 0 !important;
   height: 100px;
   display: grid;
-  grid-template-columns: 1fr max-content 3fr;
-  justify-content: center;
+  grid-template-columns: 100px max-content 3fr;
+  justify-items: center;
   align-items: center;
   cursor: pointer;
 }
 
 .button:hover {
-  background-color: #f1f1f1;
+  background-color: #f1f1f1 !important;
+}
+
+.dateContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 100px;
 }
 
 .separatorContainer {
@@ -64,4 +73,8 @@
   height: 100%;
   width: 1px;
   background-color: #dee2e6;
+}
+
+.body {
+  padding: 20px;
 }

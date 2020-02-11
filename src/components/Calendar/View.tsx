@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container } from 'react-bootstrap';
+import { Container, Accordion } from 'react-bootstrap';
 import moment from '@app/config/moment';
 import classNames from 'classnames';
 import { DayCell } from '@app/components';
@@ -68,34 +68,58 @@ const Calendar: React.FC = () => {
           <FontAwesomeIcon icon={faChevronRight} size='2x' />
         </button>
       </div>
-      <div
-        className={classNames({
-          [styles.calendarGrid]: !mobile,
-        })}
-      >
-        {days.map((day, dayIndex) => {
-          const isToday =
-            today.date() === day.date() &&
-            today.month() === day.month() &&
-            today.year() === day.year();
-          return (
-            <div
-              key={day.format('DD-MM-YYYY')}
-              className={classNames(
-                'border-bottom border-right text-center',
-                {
-                  'border-left': !(dayIndex % 7) || mobile,
-                  'border-top':
-                    (mobile && dayIndex === 0) ||
-                    (dayIndex < 7 && !mobile),
-                },
-              )}
-            >
-              <DayCell day={day} today={isToday} />
-            </div>
-          );
-        })}
-      </div>
+
+      {/* DESKTOP VIEW */}
+      {!mobile && (
+        <div
+          className={classNames({
+            [styles.calendarGrid]: !mobile,
+          })}
+        >
+          {days.map((day, dayIndex) => {
+            const isToday =
+              today.date() === day.date() &&
+              today.month() === day.month() &&
+              today.year() === day.year();
+            return (
+              <div
+                key={day.format('DD-MM-YYYY')}
+                className={classNames(
+                  'border-bottom border-right text-center',
+                  {
+                    'border-left': !(dayIndex % 7) || mobile,
+                    'border-top':
+                      (mobile && dayIndex === 0) ||
+                      (dayIndex < 7 && !mobile),
+                  },
+                )}
+              >
+                <DayCell day={day} today={isToday} />
+              </div>
+            );
+          })}
+        </div>
+      )}
+
+      {/*MOBILE VIEW*/}
+      {mobile && (
+        <Accordion>
+          {days.map(day => {
+            const isToday =
+              today.date() === day.date() &&
+              today.month() === day.month() &&
+              today.year() === day.year();
+            return (
+              <DayCell
+                key={day.format('DD-MM-YYYY')}
+                day={day}
+                today={isToday}
+                mobile
+              />
+            );
+          })}
+        </Accordion>
+      )}
     </Container>
   );
 };

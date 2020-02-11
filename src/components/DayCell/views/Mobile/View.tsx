@@ -1,5 +1,7 @@
 import React from 'react';
+import { Accordion } from 'react-bootstrap';
 import classNames from 'classnames';
+import { SignButtons } from '@app/components';
 import { DayCellViewProps } from '../../index.d';
 import styles from './styles.module.css';
 
@@ -8,32 +10,46 @@ const DayCellMobileView: React.FC<DayCellViewProps> = ({
   today,
   isWeekend,
 }) => {
+  const eventKey = day.format('DD-MM-YYYY');
+
   return (
     <div
-      className={classNames(styles.button)}
-      role='button'
-      // onClick={handleShow}
+      className={classNames(
+        'border-left border-right border-top',
+        styles.container,
+      )}
     >
-      <div>
-        <div
-          className={classNames(styles.date, {
-            [styles.weekend]: isWeekend,
-          })}
-        >
-          {day.format('DD')}
+      <Accordion.Toggle
+        as='div'
+        className={styles.button}
+        eventKey={eventKey}
+      >
+        <div className={styles.dateContainer}>
+          <div
+            className={classNames(styles.date, {
+              [styles.weekend]: isWeekend,
+            })}
+          >
+            {day.format('DD')}
+          </div>
+          <div className={styles.dayName}>{day.format('ddd')}</div>
         </div>
-        <div className={styles.dayName}>{day.format('ddd')}</div>
-      </div>
-      <div className={styles.separatorContainer}>
-        <div className={styles.beforeSeparator} />
-        <div
-          className={classNames(styles.separator, {
-            [styles.today]: today,
-          })}
-        />
-        <div className={styles.afterSeparator} />
-      </div>
-      <div>--:--</div>
+        <div className={styles.separatorContainer}>
+          <div className={styles.beforeSeparator} />
+          <div
+            className={classNames(styles.separator, {
+              [styles.today]: today,
+            })}
+          />
+          <div className={styles.afterSeparator} />
+        </div>
+        <div>--:--</div>
+      </Accordion.Toggle>
+      <Accordion.Collapse eventKey={eventKey}>
+        <div className={classNames(styles.body, 'border-top')}>
+          <SignButtons day={day} />
+        </div>
+      </Accordion.Collapse>
     </div>
   );
 };
