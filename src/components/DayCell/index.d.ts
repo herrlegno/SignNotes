@@ -5,6 +5,11 @@ export interface DayCellProps {
   today?: boolean;
 }
 
+export type DayCellViewProps = DayCellProps & {
+  isWeekend: boolean;
+  disabled?: boolean;
+};
+
 export interface FormData {
   changed: boolean;
   start: string | undefined;
