@@ -1,0 +1,29 @@
+.form {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+.inputsContainer {
+  width: 100%;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-around;
+}
+
+.inputGroup {
+  width: 178px !important;
+  margin-bottom: 20px;
+}
+
+.inputPrepend {
+  min-width: 81px;
+}
+
+.prependText {
+  width: 100%;
+  justify-content: center;
+}
+
+.submitButton {
+  justify-self: center;
+}

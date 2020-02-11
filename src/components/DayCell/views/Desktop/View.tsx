@@ -4,26 +4,15 @@ import React, {
   useRef,
   useLayoutEffect,
 } from 'react';
-import {
-  Modal,
-  Button,
-  Accordion,
-  Card,
-  InputGroup,
-  Form,
-} from 'react-bootstrap';
+import { Modal, Button, Accordion, Card } from 'react-bootstrap';
+import { SignForm } from '@app/components';
 import classNames from 'classnames';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
-import {
-  signIn,
-  signOut,
-  signUpdate,
-} from '@app/reducers/signs/actions';
-import { SignUpdatePayload } from '@app/reducers/signs/types';
+import { signIn, signOut } from '@app/reducers/signs/actions';
 import { useDispatch } from 'react-redux';
 import moment from '@app/config/moment';
-import { DayCellViewProps, FormData } from '../../index.d';
+import { DayCellViewProps } from '../../index.d';
 import styles from './styles.module.css';
 
 const DayCellDesktop: React.FC<DayCellViewProps> = ({
@@ -35,11 +24,6 @@ const DayCellDesktop: React.FC<DayCellViewProps> = ({
   const [show, setShow] = useState<boolean>(false);
   const dispatch = useDispatch();
   const ref = useRef<HTMLButtonElement>(null);
-  const [formData, setFormData] = useState<FormData>({
-    changed: false,
-    start: undefined,
-    end: undefined,
-  });
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -72,44 +56,6 @@ const DayCellDesktop: React.FC<DayCellViewProps> = ({
     dispatch(signOut(signature));
   };
 
-  const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, changed: true, [name]: value });
-  };
-
-  const handleOnSubmit = (e: React.FormEvent) => {
-    if (e.preventDefault) e.preventDefault();
-    const { start, end } = formData;
-
-    if (start || end) {
-      const sign: SignUpdatePayload = {
-        date: day.clone(),
-      };
-
-      if (start) {
-        const startSign = start.split(':').map(i => Number(i));
-        sign['in'] = day.clone().set({
-          hour: startSign[0],
-          minute: startSign[1],
-          second: 0,
-          millisecond: 0,
-        });
-      }
-
-      if (end) {
-        const endSign = end.split(':').map(i => Number(i));
-        sign['out'] = day.clone().set({
-          hour: endSign[0],
-          minute: endSign[1],
-          second: 0,
-          millisecond: 0,
-        });
-      }
-
-      dispatch(signUpdate(sign));
-    }
-  };
-
   const updateHeight = () => {
     const button = ref.current as HTMLButtonElement;
     button.style.height = `${button.clientWidth}px`;
@@ -129,9 +75,6 @@ const DayCellDesktop: React.FC<DayCellViewProps> = ({
   useLayoutEffect(() => {
     if (ref.current) updateHeight();
   }, []);
-
-  const isFormSubmittable =
-    (formData.start || formData.end) && formData.changed;
 
   return (
     <React.Fragment>
@@ -167,7 +110,7 @@ const DayCellDesktop: React.FC<DayCellViewProps> = ({
             <Accordion className={styles.accordion}>
               <Card>
                 <Accordion.Toggle as={Card.Header} eventKey='0'>
-                  Opciones Avanzadas
+                  Manual
                   <FontAwesomeIcon
                     icon={faChevronDown}
                     className={styles.icon}
@@ -175,65 +118,7 @@ const DayCellDesktop: React.FC<DayCellViewProps> = ({
                 </Accordion.Toggle>
                 <Accordion.Collapse eventKey='0'>
                   <Card.Body>
-                    <Form
-                      className={styles.optionForm}
-                      onSubmit={handleOnSubmit}
-                    >
-                      <InputGroup>
-                        <InputGroup.Prepend>
-                          <InputGroup.Text
-                            id={`label-signin-time-${day.format(
-                              'DD-MM-YYYY',
-                            )}`}
-                          >
-                            Hora de llegada
-                          </InputGroup.Text>
-                        </InputGroup.Prepend>
-                        <Form.Control
-                          id={`input-signin-time-${day.format(
-                            'DD-MM-YYYY',
-                          )}`}
-                          aria-describedby={`label-signin-time-${day.format(
-                            'DD-MM-YYYY',
-                          )}`}
-                          name='start'
-                          type='time'
-                          value={formData.start}
-                          onChange={handleOnChange}
-                        />
-                      </InputGroup>
-                      <InputGroup>
-                        <InputGroup.Prepend>
-                          <InputGroup.Text
-                            id={`label-signout-time-${day.format(
-                              'DD-MM-YYYY',
-                            )}`}
-                          >
-                            Hora de salida
-                          </InputGroup.Text>
-                        </InputGroup.Prepend>
-                        <Form.Control
-                          id={`input-signout-time-${day.format(
-                            'DD-MM-YYYY',
-                          )}`}
-                          aria-describedby={`label-signout-time-${day.format(
-                            'DD-MM-YYYY',
-                          )}`}
-                          name='end'
-                          type='time'
-                          value={formData.end}
-                          onChange={handleOnChange}
-                        />
-                      </InputGroup>
-                      <Button
-                        className={styles.submitButton}
-                        variant='primary'
-                        type='submit'
-                        disabled={!isFormSubmittable}
-                      >
-                        Guardar
-                      </Button>
-                    </Form>
+                    <SignForm day={day} />
                   </Card.Body>
                 </Accordion.Collapse>
               </Card>
