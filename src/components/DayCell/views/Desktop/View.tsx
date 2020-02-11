@@ -5,13 +5,10 @@ import React, {
   useLayoutEffect,
 } from 'react';
 import { Modal, Button, Accordion, Card } from 'react-bootstrap';
-import { SignForm } from '@app/components';
+import { SignForm, SignButtons } from '@app/components';
 import classNames from 'classnames';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
-import { signIn, signOut } from '@app/reducers/signs/actions';
-import { useDispatch } from 'react-redux';
-import moment from '@app/config/moment';
 import { DayCellViewProps } from '../../index.d';
 import styles from './styles.module.css';
 
@@ -22,39 +19,10 @@ const DayCellDesktop: React.FC<DayCellViewProps> = ({
   disabled,
 }) => {
   const [show, setShow] = useState<boolean>(false);
-  const dispatch = useDispatch();
   const ref = useRef<HTMLButtonElement>(null);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-
-  const handleOnSignIn = () => {
-    const now = moment();
-
-    const signature = {
-      date: now.set({
-        date: day.date(),
-        month: day.month(),
-        year: day.year(),
-      }),
-    };
-
-    dispatch(signIn(signature));
-  };
-
-  const handleOnSignOut = () => {
-    const now = moment();
-
-    const signature = {
-      date: now.set({
-        date: day.date(),
-        month: day.month(),
-        year: day.year(),
-      }),
-    };
-
-    dispatch(signOut(signature));
-  };
 
   const updateHeight = () => {
     const button = ref.current as HTMLButtonElement;
@@ -99,14 +67,7 @@ const DayCellDesktop: React.FC<DayCellViewProps> = ({
         <Modal.Body>
           <div className='d-flex flex-column align-items-center'>
             <div className={styles.timer}>--:--</div>
-            <div className={styles.buttonsGrid}>
-              <Button variant='success' onClick={handleOnSignIn}>
-                Llegada
-              </Button>
-              <Button variant='danger' onClick={handleOnSignOut}>
-                Salida
-              </Button>
-            </div>
+            <SignButtons day={day} />
             <Accordion className={styles.accordion}>
               <Card>
                 <Accordion.Toggle as={Card.Header} eventKey='0'>
