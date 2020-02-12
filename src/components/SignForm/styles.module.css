@@ -1,18 +1,13 @@
 .form {
-  display: flex;
-  align-items: center;
-  flex-direction: column;
+  display: grid;
+  justify-items: center;
+  grid-gap: 10px;
 }
 .inputsContainer {
   width: 100%;
-  display: flex;
-  flex-flow: row wrap;
-  justify-content: space-around;
-}
-
-.inputGroup {
-  width: 178px !important;
-  margin-bottom: 20px;
+  display: grid;
+  grid-gap: 10px;
+  grid-template-columns: repeat(auto-fit, minmax(178px, 1fr));
 }
 
 .inputPrepend {

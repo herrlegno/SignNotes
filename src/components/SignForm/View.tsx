@@ -57,7 +57,7 @@ const SignForm: React.FC<SignFormProps> = ({ day }) => {
   return (
     <Form className={styles.form} onSubmit={handleOnSubmit}>
       <div className={styles.inputsContainer}>
-        <InputGroup className={styles.inputGroup}>
+        <InputGroup>
           <InputGroup.Prepend className={styles.inputPrepend}>
             <InputGroup.Text
               id={`label-signin-time-${day.format('DD-MM-YYYY')}`}
@@ -77,7 +77,7 @@ const SignForm: React.FC<SignFormProps> = ({ day }) => {
             onChange={handleOnChange}
           />
         </InputGroup>
-        <InputGroup className={styles.inputGroup}>
+        <InputGroup>
           <InputGroup.Prepend className={styles.inputPrepend}>
             <InputGroup.Text
               id={`label-signout-time-${day.format('DD-MM-YYYY')}`}
