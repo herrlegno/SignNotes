@@ -1,7 +1,7 @@
 import React from 'react';
 import { Accordion } from 'react-bootstrap';
 import classNames from 'classnames';
-import { SignButtons } from '@app/components';
+import { SignButtons, HoursTracker } from '@app/components';
 import { DayCellViewProps } from '../../index.d';
 import styles from './styles.module.css';
 
@@ -43,7 +43,7 @@ const DayCellMobileView: React.FC<DayCellViewProps> = ({
           />
           <div className={styles.afterSeparator} />
         </div>
-        <div>--:--</div>
+        <HoursTracker day={day} />
       </Accordion.Toggle>
       <Accordion.Collapse eventKey={eventKey}>
         <div className={classNames(styles.body, 'border-top')}>

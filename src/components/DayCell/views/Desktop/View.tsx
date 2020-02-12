@@ -5,7 +5,7 @@ import React, {
   useLayoutEffect,
 } from 'react';
 import { Modal, Button, Accordion, Card } from 'react-bootstrap';
-import { SignForm, SignButtons } from '@app/components';
+import { SignForm, SignButtons, HoursTracker } from '@app/components';
 import classNames from 'classnames';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
@@ -66,7 +66,7 @@ const DayCellDesktop: React.FC<DayCellViewProps> = ({
         </Modal.Header>
         <Modal.Body>
           <div className={styles.body}>
-            <div>--:--</div>
+            <HoursTracker day={day} />
             <SignButtons day={day} />
             <Accordion className={styles.accordion}>
               <Card>

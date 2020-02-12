@@ -1,0 +1,33 @@
+.blinkAnim {
+  -webkit-animation: blinkAnim 1s infinite both;
+  animation: blinkAnim 1s infinite both;
+}
+
+@-webkit-keyframes blinkAnim {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.2;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@keyframes blinkAnim {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.2;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.timer {
+  font-family: Digital Clock;
+  font-size: 32px;
+  font-weight: normal;
+}

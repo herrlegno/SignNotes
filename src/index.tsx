@@ -10,6 +10,7 @@ import * as serviceWorker from './serviceWorker';
 import store from '@app/config/store';
 import routes from './routes';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import 'index.css';
 
 ReactDOM.render(
   <Provider store={store}>
