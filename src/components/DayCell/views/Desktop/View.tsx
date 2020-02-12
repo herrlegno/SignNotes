@@ -65,12 +65,16 @@ const DayCellDesktop: React.FC<DayCellViewProps> = ({
           <Modal.Title>{day.format('ll')}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <div className='d-flex flex-column align-items-center'>
-            <div className={styles.timer}>--:--</div>
+          <div className={styles.body}>
+            <div>--:--</div>
             <SignButtons day={day} />
             <Accordion className={styles.accordion}>
               <Card>
-                <Accordion.Toggle as={Card.Header} eventKey='0'>
+                <Accordion.Toggle
+                  as={Card.Header}
+                  className={styles.accordionHeader}
+                  eventKey='0'
+                >
                   Manual
                   <FontAwesomeIcon
                     icon={faChevronDown}

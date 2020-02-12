@@ -39,12 +39,20 @@
   color: #aaaaaa;
 }
 
-.timer {
-  margin-bottom: 10px;
+.body {
+  display: grid;
+  grid-gap: 10px;
+  justify-items: center;
 }
 
 .accordion {
   width: 100%;
+}
+
+.accordionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .icon {
