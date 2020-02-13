@@ -1,17 +1,48 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { InputGroup, Form, Button } from 'react-bootstrap';
 import { signUpdate } from '@app/reducers/signs/actions';
 import { useDispatch } from 'react-redux';
 import { SignUpdatePayload } from '@app/reducers/signs/types';
+import { useSelector } from 'react-redux';
+import { RootState } from '@app/reducers';
+import moment from '@app/config/moment';
 import { SignFormProps, SignFormState } from './index.d';
 import styles from './styles.module.css';
 
+const formatToHour = (date: number) => {
+  const momentDate = moment(date);
+  const format = [
+    momentDate
+      .hours()
+      .toString()
+      .padStart(2, '0'),
+    momentDate
+      .minutes()
+      .toString()
+      .padStart(2, '0'),
+  ].join(':');
+
+  return format;
+};
+
 const SignForm: React.FC<SignFormProps> = ({ day }) => {
+  const start =
+    useSelector(
+      (state: RootState) =>
+        state.signings[day.format('DD-MM-YYYY')]?.in,
+    ) || -1;
+  const end =
+    useSelector(
+      (state: RootState) =>
+        state.signings[day.format('DD-MM-YYYY')]?.out,
+    ) || -1;
+
   const [data, setData] = useState<SignFormState>({
     changed: false,
-    start: undefined,
-    end: undefined,
+    start: start >= 0 ? formatToHour(start) : undefined,
+    end: end >= 0 ? formatToHour(end) : undefined,
   });
+
   const dispatch = useDispatch();
 
   const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -51,6 +82,14 @@ const SignForm: React.FC<SignFormProps> = ({ day }) => {
       dispatch(signUpdate(sign));
     }
   };
+
+  useEffect(() => {
+    setData({
+      changed: false,
+      start: start >= 0 ? formatToHour(start) : undefined,
+      end: end >= 0 ? formatToHour(end) : undefined,
+    });
+  }, [start, end]);
 
   const isFormSubmittable = (data.start || data.end) && data.changed;
 
