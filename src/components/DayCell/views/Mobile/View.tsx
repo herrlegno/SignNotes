@@ -47,7 +47,7 @@ const DayCellMobileView: React.FC<DayCellViewProps> = ({
       </Accordion.Toggle>
       <Accordion.Collapse eventKey={eventKey}>
         <div className={classNames(styles.body, 'border-top')}>
-          <SignButtons day={day} />
+          {today && <SignButtons day={day} />}
         </div>
       </Accordion.Collapse>
     </div>

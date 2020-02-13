@@ -67,7 +67,7 @@ const DayCellDesktop: React.FC<DayCellViewProps> = ({
         <Modal.Body>
           <div className={styles.body}>
             <HoursTracker day={day} />
-            <SignButtons day={day} />
+            {today && <SignButtons day={day} />}
             <Accordion className={styles.accordion}>
               <Card>
                 <Accordion.Toggle

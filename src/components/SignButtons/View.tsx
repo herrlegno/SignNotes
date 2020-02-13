@@ -49,7 +49,6 @@ const SignButtons: React.FC<SignButtonsProps> = ({ day }) => {
     dispatch(signOut(signature));
   };
 
-  const isToday = moment().date() === day.date();
   const signedIn = start >= 0;
   const signedOut = end >= 0;
 
@@ -58,14 +57,14 @@ const SignButtons: React.FC<SignButtonsProps> = ({ day }) => {
       <Button
         variant='success'
         onClick={handleOnSignIn}
-        disabled={signedIn || !isToday}
+        disabled={signedIn}
       >
         Llegada
       </Button>
       <Button
         variant='danger'
         onClick={handleOnSignOut}
-        disabled={signedOut || !signedIn || !isToday}
+        disabled={signedOut || !signedIn}
       >
         Salida
       </Button>
