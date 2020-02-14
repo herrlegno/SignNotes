@@ -37,7 +37,7 @@ const Notification: React.FC<NotificationProps> = ({
       className={classNames(styles.notification, styles[data.type])}
       show={data.show}
       onClose={() => close(data.id)}
-      // autohide
+      autohide
     >
       <Toast.Header className={styles.header}>
         <div className={styles.textContainer}>
@@ -45,7 +45,7 @@ const Notification: React.FC<NotificationProps> = ({
             icon={getIcon(data.type)}
             className={classNames(styles.icon, styles[data.type])}
           />
-          <p className={styles.text}>Hello World</p>
+          <p className={styles.text}>{data.message}</p>
         </div>
       </Toast.Header>
     </Toast>

@@ -2,10 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import { RootState } from '@app/reducers';
-import {
-  pushNotification,
-  removeNotification,
-} from '@app/reducers/notifications/actions';
+import { removeNotification } from '@app/reducers/notifications/actions';
 import { Notification } from '@app/components';
 import { StateNotification } from './index.d';
 import styles from './styles.module.css';
@@ -23,13 +20,6 @@ const NotificationManager = () => {
     b: StateNotification,
   ) => {
     return a.id - b.id;
-  };
-
-  const handleOnAdd = () => {
-    dispatch(pushNotification({ type: 'success' }));
-    dispatch(pushNotification({ type: 'warning' }));
-    dispatch(pushNotification({ type: 'error' }));
-    dispatch(pushNotification({ type: 'info' }));
   };
 
   const handleOnClose = (id: number) => {
@@ -75,9 +65,12 @@ const NotificationManager = () => {
       aria-atomic='true'
       className={styles.manager}
     >
-      <button onClick={handleOnAdd}>añadir notificacion</button>
       {state.map(notification => (
-        <Notification data={notification} close={handleOnClose} />
+        <Notification
+          key={notification.id}
+          data={notification}
+          close={handleOnClose}
+        />
       ))}
     </div>
   );

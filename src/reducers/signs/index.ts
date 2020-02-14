@@ -6,8 +6,6 @@ import {
   SIGN_UPDATE,
 } from './types';
 
-import db from '@app/config/db';
-
 interface StateSignature {
   in?: number;
   out?: number;
@@ -29,18 +27,6 @@ const signReducer = (
       const formatDate = date.format('DD-MM-YYYY');
       const signIn = date.valueOf();
 
-      db.signings
-        .add({
-          date: formatDate,
-          in: signIn,
-        })
-        .catch(() => {
-          db.signings.update(formatDate, {
-            in: signIn,
-          });
-        });
-
-      // TODO: handle errors
       let entry = state[formatDate];
       entry = { ...entry, in: signIn };
 
@@ -54,18 +40,6 @@ const signReducer = (
       const formatDate = date.format('DD-MM-YYYY');
       const signOut = date.valueOf();
 
-      db.signings
-        .add({
-          date: formatDate,
-          out: signOut,
-        })
-        .catch(() => {
-          db.signings.update(formatDate, {
-            out: signOut,
-          });
-        });
-
-      // TODO: handle errors
       let entry = state[formatDate];
       entry = { ...entry, out: signOut };
 
@@ -87,46 +61,7 @@ const signReducer = (
       const {
         payload: { date, in: signIn, out: signOut },
       } = action;
-
       const formatDate = date.format('DD-MM-YYYY');
-
-      if (signIn && signOut) {
-        db.signings
-          .add({
-            date: formatDate,
-            in: signIn.valueOf(),
-            out: signOut.valueOf(),
-          })
-          .catch(() => {
-            db.signings.update(formatDate, {
-              in: signIn.valueOf(),
-              out: signOut.valueOf(),
-            });
-          });
-      } else if (signIn) {
-        db.signings
-          .add({
-            date: formatDate,
-            in: signIn.valueOf(),
-          })
-          .catch(() => {
-            db.signings.update(formatDate, {
-              in: signIn.valueOf(),
-            });
-          });
-      } else if (signOut) {
-        db.signings
-          .add({
-            date: formatDate,
-            out: signOut.valueOf(),
-          })
-          .catch(() => {
-            db.signings.update(formatDate, {
-              out: signOut.valueOf(),
-            });
-          });
-      }
-
       let entry = state[formatDate];
 
       if (signIn && signOut) {

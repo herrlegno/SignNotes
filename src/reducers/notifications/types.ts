@@ -7,6 +7,7 @@ export type Notification = AddActionPayload & {
 
 export interface AddActionPayload {
   type: 'success' | 'warning' | 'error' | 'info';
+  message: string;
 }
 
 export interface RemoveActionPayload {
