@@ -1,4 +1,5 @@
 import React from 'react';
+import { OptionsForm } from '@app/components';
 import { Link } from 'react-router-dom';
 import { Container, Row, Col } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -18,6 +19,9 @@ const OptionsView: React.FunctionComponent = () => {
             <div />
           </div>
         </Col>
+      </Row>
+      <Row className='justify-content-md-center'>
+        <OptionsForm />
       </Row>
     </Container>
   );
