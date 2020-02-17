@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Container, Row, Col } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCog } from '@fortawesome/free-solid-svg-icons';
+import { faCog, faChartBar } from '@fortawesome/free-solid-svg-icons';
 import styles from './styles.module.css';
 import { Calendar } from '@app/components';
 
@@ -16,7 +16,9 @@ const HomeView: React.FunctionComponent = () => {
               <FontAwesomeIcon icon={faCog} size='2x' />
             </Link>
             <h1 className={styles.header}>Sign Notes</h1>
-            <div />
+            <Link to='/report'>
+              <FontAwesomeIcon icon={faChartBar} size='2x' />
+            </Link>
           </div>
         </Col>
       </Row>

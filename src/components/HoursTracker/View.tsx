@@ -10,7 +10,10 @@ const format = (num: number) => {
   return num.toString().padStart(2, '0');
 };
 
-const HoursTracker: React.FC<HoursTrackerProps> = ({ day }) => {
+const HoursTracker: React.FC<HoursTrackerProps> = ({
+  day,
+  className,
+}) => {
   const start =
     useSelector(
       (state: RootState) =>
@@ -85,7 +88,7 @@ const HoursTracker: React.FC<HoursTrackerProps> = ({ day }) => {
 
   return (
     <div
-      className={classNames(styles.timer, {
+      className={classNames(className, styles.timer, {
         [styles.blinkAnim]: isTimerActive,
       })}
     >
@@ -94,6 +97,10 @@ const HoursTracker: React.FC<HoursTrackerProps> = ({ day }) => {
         `${format(elapsed.hours)}:${format(elapsed.minutes)}`}
     </div>
   );
+};
+
+HoursTracker.defaultProps = {
+  className: '',
 };
 
 export default HoursTracker;

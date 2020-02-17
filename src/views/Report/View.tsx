@@ -1,12 +1,12 @@
 import React from 'react';
-import { OptionsForm } from '@app/components';
 import { Link } from 'react-router-dom';
 import { Container, Row, Col } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronLeft } from '@fortawesome/free-solid-svg-icons';
+import { Report } from '@app/components';
 import styles from './styles.module.css';
 
-const OptionsView: React.FunctionComponent = () => {
+const ReportView: React.FC = () => {
   return (
     <Container className='pt-4'>
       <Row className='justify-content-md-center'>
@@ -15,16 +15,16 @@ const OptionsView: React.FunctionComponent = () => {
             <Link to='/' className={styles.icon}>
               <FontAwesomeIcon icon={faChevronLeft} size='2x' />
             </Link>
-            <h1>Configuración</h1>
+            <h1>Informe</h1>
             <div />
           </div>
         </Col>
       </Row>
-      <Row className='justify-content-md-center'>
-        <OptionsForm />
+      <Row>
+        <Report />
       </Row>
     </Container>
   );
 };
 
-export default OptionsView;
+export default ReportView;
