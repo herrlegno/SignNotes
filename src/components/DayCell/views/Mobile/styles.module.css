@@ -78,3 +78,28 @@
 .body {
   padding: 20px;
 }
+
+.formSeparator {
+  width: 100%;
+  display: flex;
+  margin: 10px 0;
+  align-items: center;
+  color: #495057;
+}
+
+.formSeparator:after,
+.formSeparator:before {
+  flex: 1;
+  content: ' ';
+  height: 1px;
+  border-top: 1px solid #ced4da;
+  width: 100%;
+}
+
+.formSeparator:after {
+  margin-left: 5px;
+}
+
+.formSeparator:before {
+  margin-right: 5px;
+}

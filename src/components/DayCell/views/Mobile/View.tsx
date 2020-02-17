@@ -4,6 +4,7 @@ import classNames from 'classnames';
 import { SignButtons, HoursTracker } from '@app/components';
 import { DayCellViewProps } from '../../index.d';
 import styles from './styles.module.css';
+import SignForm from '@app/components/SignForm/View';
 
 const DayCellMobileView: React.FC<DayCellViewProps> = ({
   day,
@@ -48,6 +49,10 @@ const DayCellMobileView: React.FC<DayCellViewProps> = ({
       <Accordion.Collapse eventKey={eventKey}>
         <div className={classNames(styles.body, 'border-top')}>
           {today && <SignButtons day={day} />}
+          {today && (
+            <div className={styles.formSeparator}>Manual</div>
+          )}
+          <SignForm day={day} />
         </div>
       </Accordion.Collapse>
     </div>
