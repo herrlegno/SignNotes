@@ -2,7 +2,7 @@ import React from 'react';
 import { Container } from 'react-bootstrap';
 import moment from '@app/config/moment';
 import classNames from 'classnames';
-import { ReportCell } from '@app/components';
+import { ReportCell, WeekReport } from '@app/components';
 import { nextMonth, prevMonth } from '@app/reducers/month/actions';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useSelector } from 'react-redux';
@@ -93,7 +93,7 @@ const Report: React.FC = () => {
                       },
                     )}
                   >
-                    {`Semana ${week + 1}`}
+                    <WeekReport week={day.week()} />
                   </div>
                 )}
                 <div
@@ -131,7 +131,7 @@ const Report: React.FC = () => {
                     'border-top-0': week !== 0,
                   })}
                 >
-                  {`Semana ${week + 1}`}
+                  <WeekReport week={day.week()} />
                 </div>
               )}
               <ReportCell day={day} mobile />
