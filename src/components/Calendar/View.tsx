@@ -104,18 +104,20 @@ const Calendar: React.FC = () => {
       {/*MOBILE VIEW*/}
       {mobile && (
         <Accordion>
-          {days.map(day => {
+          {days.map((day, dayIndex) => {
             const isToday =
               today.date() === day.date() &&
               today.month() === day.month() &&
               today.year() === day.year();
             return (
-              <DayCell
+              <div
                 key={day.format('DD-MM-YYYY')}
-                day={day}
-                today={isToday}
-                mobile
-              />
+                className={classNames({
+                  'border-bottom': dayIndex === days.length - 1,
+                })}
+              >
+                <DayCell day={day} today={isToday} mobile />
+              </div>
             );
           })}
         </Accordion>
