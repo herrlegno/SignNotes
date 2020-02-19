@@ -1,0 +1,24 @@
+.form {
+  display: grid;
+  justify-items: center;
+  grid-gap: 10px;
+}
+.inputsContainer {
+  width: 100%;
+  display: grid;
+  grid-gap: 10px;
+  grid-template-columns: repeat(auto-fit, minmax(178px, 1fr));
+}
+
+.inputPrepend {
+  min-width: 81px;
+}
+
+.prependText {
+  width: 100%;
+  justify-content: center;
+}
+
+.submitButton {
+  justify-self: center;
+}

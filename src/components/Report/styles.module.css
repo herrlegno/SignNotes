@@ -1,0 +1,52 @@
+.day {
+  text-transform: capitalize;
+  padding: 0 5px;
+}
+
+.calendarGrid {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+}
+
+.controlsGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 10px;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.month {
+  text-transform: capitalize;
+  text-align: center;
+  font-size: 32px;
+  margin-bottom: 0px;
+}
+
+.controlButton {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  background: none;
+  outline: unset !important;
+}
+
+.weekHeader {
+  height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 24px;
+}
+
+.weekDesktop {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.sm {
+  font-size: 12px;
+}

@@ -1,0 +1,10 @@
+.form {
+  display: grid;
+  justify-items: center;
+  grid-gap: 10px;
+}
+.inputsContainer {
+  width: 100%;
+  display: grid;
+  grid-gap: 10px;
+}
