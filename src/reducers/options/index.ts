@@ -1,10 +1,14 @@
 import { SET_OPTIONS, OptionsActionType, Options } from './types';
 
-const initialState = JSON.parse(
-  localStorage.getItem('options') as string,
-) || {
+const lsOpts = JSON.parse(localStorage.getItem('options') as string);
+
+const initialState = lsOpts || {
   weeklyHours: '0',
 };
+
+if (!lsOpts) {
+  localStorage.setItem('options', JSON.stringify(initialState));
+}
 
 const optionsReducer = (
   state: Options = initialState,
