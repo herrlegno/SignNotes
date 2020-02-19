@@ -20,6 +20,7 @@
   text-transform: capitalize;
   text-align: center;
   font-size: 32px;
+  margin: 0;
 }
 
 .controlButton {

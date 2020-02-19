@@ -15,7 +15,7 @@ const OptionsView: React.FunctionComponent = () => {
             <Link to='/' className={styles.icon}>
               <FontAwesomeIcon icon={faChevronLeft} size='2x' />
             </Link>
-            <h1>Configuración</h1>
+            <h1 className={styles.header}>Configuración</h1>
             <div />
           </div>
         </Col>

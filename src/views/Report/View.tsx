@@ -15,7 +15,7 @@ const ReportView: React.FC = () => {
             <Link to='/' className={styles.icon}>
               <FontAwesomeIcon icon={faChevronLeft} size='2x' />
             </Link>
-            <h1>Informe</h1>
+            <h1 className={styles.header}>Informe</h1>
             <div />
           </div>
         </Col>
