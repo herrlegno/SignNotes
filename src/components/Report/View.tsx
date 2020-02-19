@@ -76,7 +76,6 @@ const Report: React.FC = () => {
           })}
         >
           {days.map((day, dayIndex) => {
-            const week = Math.trunc(dayIndex / 7);
             const weekStart = !(dayIndex % 7);
             return (
               <React.Fragment key={day.format('DD-MM-YYYY')}>
@@ -117,18 +116,13 @@ const Report: React.FC = () => {
       {/*MOBILE VIEW*/}
       {mobile &&
         days.map((day, dayIndex) => {
-          const week =
-            day.week() -
-            moment(date)
-              .startOf('month')
-              .week();
           const weekStart = day.day() === 1 || dayIndex === 0;
           return (
             <React.Fragment key={day.format('DD-MM-YYYY')}>
               {weekStart && (
                 <div
                   className={classNames(styles.weekHeader, 'border', {
-                    'border-top-0': week !== 0,
+                    'border-top-0': dayIndex !== 0,
                   })}
                 >
                   <WeekReport week={day.week()} />
