@@ -1,12 +1,22 @@
 {
   "name": "signnotes",
   "version": "1.0.0",
-  "author": "Alejandro Gonzalez Alonso",
+  "author": {
+    "name": "Alejandro Gonzalez Alonso",
+    "email": "alejandrolegno@gmail.com"
+  },
   "description": "Aplicación para gestionar la asistencia y la realización de horas de trabajo.",
   "private": true,
   "productName": "SignNotes",
+  "bugs": {
+      "url": "https://github.com/ashleygwilliams/my_package/issues"
+    },
   "main": "electron/main.js",
   "homepage": "./",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/herrlegno/SignNotes.git"
+  },
   "build": {
     "files": [
       "build/**/*",
@@ -18,6 +28,13 @@
       "allowToChangeInstallationDirectory": true,
       "allowElevation": false,
       "deleteAppDataOnUninstall": true
+    },
+    "linux": {
+      "target": [
+        "deb",
+        "tar.gz",
+        "pacman"
+      ]
     }
   },
   "scripts": {
@@ -28,7 +45,8 @@
     "start-electron": "electron .",
     "build-electron": "rsync -a electron/ build/electron --exclude 'dev-start.js'",
     "prepackage": "npm run build && npm run build-electron",
-    "package": "electron-builder build -wl -c.extraMetadata.main=build/electron/main.js --publish never"
+    "package": "electron-builder build -wl -c.extraMetadata.main=build/electron/main.js --publish never",
+    "release": "electron-builder build -wl -c.extraMetadata.main=build/electron/main.js"
   },
   "eslintConfig": {
     "extends": "react-app"
