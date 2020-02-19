@@ -20,7 +20,7 @@ const OptionsView: React.FunctionComponent = () => {
           </div>
         </Col>
       </Row>
-      <Row className='justify-content-md-center'>
+      <Row className='justify-content-center ml-1 mr-1'>
         <OptionsForm />
       </Row>
     </Container>
