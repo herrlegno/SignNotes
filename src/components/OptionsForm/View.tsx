@@ -1,23 +1,25 @@
 import React, { useState } from 'react';
 import { InputGroup, Form, Button } from 'react-bootstrap';
 import classNames from 'classnames';
+import { useSelector, useDispatch } from 'react-redux';
+import { setOptions as setReduxOptions } from '@app/reducers/options/actions';
+import { RootState } from '@app/reducers';
 import { OptionsFormState } from './index.d';
 import styles from './styles.module.css';
 
 const OptionsForm: React.FC = () => {
-  const lsOpts = JSON.parse(
-    localStorage.getItem('options') as string,
-  );
+  const reduxOps = useSelector((state: RootState) => state.options);
+  const dispatch = useDispatch();
 
   const [options, setOptions] = useState<OptionsFormState>(
-    lsOpts
+    reduxOps
       ? {
-          ...lsOpts,
+          ...reduxOps,
           changed: false,
         }
       : {
           changed: false,
-          weeklyHours: 0,
+          weeklyHours: '0',
         },
   );
 
@@ -29,7 +31,7 @@ const OptionsForm: React.FC = () => {
   const handleOnSubmit = (e: React.FormEvent) => {
     if (e.preventDefault) e.preventDefault();
     const { changed, ...newOptions } = options;
-    localStorage.setItem('options', JSON.stringify(newOptions));
+    dispatch(setReduxOptions(newOptions));
   };
 
   const isFormSubmittable = options.changed;
@@ -54,7 +56,7 @@ const OptionsForm: React.FC = () => {
             aria-describedby='weeklyHoursLabel'
             name='weeklyHours'
             type='number'
-            value={String(options.weeklyHours)}
+            value={options.weeklyHours}
             onChange={handleOnChange}
           />
         </InputGroup>
