@@ -1,6 +1,8 @@
 {
   "name": "signnotes",
-  "version": "0.1.0",
+  "version": "1.0.0",
+  "author": "Alejandro Gonzalez Alonso",
+  "description": "Aplicación para gestionar la asistencia y la realización de horas de trabajo.",
   "private": true,
   "productName": "SignNotes",
   "main": "electron/main.js",
@@ -9,7 +11,14 @@
     "files": [
       "build/**/*",
       "node_modules/**/*"
-    ]
+    ],
+    "nsis": {
+      "oneClick": false,
+      "artifactName": "${productName}-setup-${version}.${ext}",
+      "allowToChangeInstallationDirectory": true,
+      "allowElevation": false,
+      "deleteAppDataOnUninstall": true
+    }
   },
   "scripts": {
     "start": "craco start",
