@@ -1,6 +1,6 @@
 {
   "name": "signnotes",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "author": {
     "name": "Alejandro Gonzalez Alonso",
     "email": "alejandrolegno@gmail.com"
@@ -9,8 +9,8 @@
   "private": true,
   "productName": "SignNotes",
   "bugs": {
-      "url": "https://github.com/ashleygwilliams/my_package/issues"
-    },
+    "url": "https://github.com/ashleygwilliams/my_package/issues"
+  },
   "main": "electron/main.js",
   "homepage": "./",
   "repository": {
@@ -22,6 +22,12 @@
       "build/**/*",
       "node_modules/**/*"
     ],
+    "win": {
+      "target": [
+        "nsis",
+        "portable"
+      ]
+    },
     "nsis": {
       "oneClick": false,
       "artifactName": "${productName}-setup-${version}.${ext}",
@@ -29,11 +35,14 @@
       "allowElevation": false,
       "deleteAppDataOnUninstall": true
     },
+    "portable": {
+      "artifactName": "${productName}-${version}-portable.${ext}"
+    },
     "linux": {
       "target": [
         "deb",
         "tar.gz",
-        "pacman"
+        "AppImage"
       ]
     }
   },
@@ -46,6 +55,7 @@
     "build-electron": "rsync -a electron/ build/electron --exclude 'dev-start.js'",
     "prepackage": "npm run build && npm run build-electron",
     "package": "electron-builder build -wl -c.extraMetadata.main=build/electron/main.js --publish never",
+    "prerelease": "npm run build && npm run build-electron",
     "release": "electron-builder build -wl -c.extraMetadata.main=build/electron/main.js"
   },
   "eslintConfig": {
