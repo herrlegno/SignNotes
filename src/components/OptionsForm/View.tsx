@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { InputGroup, Form, Button } from 'react-bootstrap';
 import classNames from 'classnames';
 import { useSelector, useDispatch } from 'react-redux';
@@ -35,6 +35,13 @@ const OptionsForm: React.FC = () => {
   };
 
   const isFormSubmittable = options.changed;
+
+  useEffect(() => {
+    setOptions({
+      ...reduxOps,
+      changed: false,
+    });
+  }, [reduxOps]);
 
   return (
     <Form
