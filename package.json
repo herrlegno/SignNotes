@@ -22,6 +22,12 @@
       "build/**/*",
       "node_modules/**/*"
     ],
+    "win": {
+      "target": [
+        "nsis",
+        "portable"
+      ]
+    },
     "nsis": {
       "oneClick": false,
       "artifactName": "${productName}-setup-${version}.${ext}",
@@ -29,11 +35,14 @@
       "allowElevation": false,
       "deleteAppDataOnUninstall": true
     },
+    "portable": {
+      "artifactName": "${productName}-${version}-portable.${ext}"
+    },
     "linux": {
       "target": [
         "deb",
         "tar.gz",
-        "pacman"
+        "AppImage"
       ]
     }
   },
