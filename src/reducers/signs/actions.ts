@@ -231,7 +231,7 @@ export function signUpdate(signature: SignUpdatePayload) {
           in: signIn.valueOf(),
         })
         .then(() => {
-          dispatch(setSignIn({ date }));
+          dispatch(setSignIn({ date: signIn.clone() }));
           const notification: AddActionPayload = {
             type: 'success',
             message: 'Firma añadida!',
@@ -245,7 +245,7 @@ export function signUpdate(signature: SignUpdatePayload) {
               in: signIn.valueOf(),
             })
             .then(() => {
-              dispatch(setSignIn({ date }));
+              dispatch(setSignIn({ date: signIn.clone() }));
               const notification: AddActionPayload = {
                 type: 'success',
                 message: 'Firma añadida!',
@@ -270,7 +270,7 @@ export function signUpdate(signature: SignUpdatePayload) {
           out: signOut.valueOf(),
         })
         .then(() => {
-          dispatch(setSignOut({ date }));
+          dispatch(setSignOut({ date: signOut.clone() }));
           const notification: AddActionPayload = {
             type: 'success',
             message: 'Firma añadida!',
@@ -284,7 +284,7 @@ export function signUpdate(signature: SignUpdatePayload) {
               out: signOut.valueOf(),
             })
             .then(() => {
-              dispatch(setSignOut({ date }));
+              dispatch(setSignOut({ date: signOut.clone() }));
               const notification: AddActionPayload = {
                 type: 'success',
                 message: 'Firma añadida!',
