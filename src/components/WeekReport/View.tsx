@@ -14,7 +14,7 @@ const WeekReport: React.FC<any> = ({ week }) => {
   const signings = useSelector((state: RootState) => state.signings);
 
   const formatBalance = (balance: Duration) => {
-    const status = balance.hours() < 0 && balance.minutes() < 0;
+    const status = balance.hours() < 0 || balance.minutes() < 0;
     let hours = balance.hours() + balance.days() * 24;
     let minutes = balance.minutes();
 
@@ -59,7 +59,7 @@ const WeekReport: React.FC<any> = ({ week }) => {
   }
 
   const balance = weeklyDuration.subtract(hoursDone);
-  const status = balance.hours() < 0 && balance.minutes() < 0;
+  const status = balance.hours() < 0 || balance.minutes() < 0;
 
   return (
     <div className={styles.container}>
