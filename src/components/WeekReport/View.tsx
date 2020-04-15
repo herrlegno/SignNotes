@@ -12,6 +12,9 @@ const format = (num: number) => {
 
 const WeekReport: React.FC<any> = ({ week }) => {
   const signings = useSelector((state: RootState) => state.signings);
+  const hours = useSelector(
+    (state: RootState) => state.options.weeklyHours,
+  );
 
   const formatBalance = (balance: Duration) => {
     const status = balance.hours() < 0 || balance.minutes() < 0;
@@ -28,30 +31,23 @@ const WeekReport: React.FC<any> = ({ week }) => {
     return `${status ? '+' : '-'}${format(hours)}:${format(minutes)}`;
   };
 
-  const start = moment()
-    .week(week)
-    .startOf('week');
-  const end = moment(start)
-    .week(week)
-    .endOf('week');
+  const start = moment().week(week).startOf('week');
+  const end = moment(start).week(week).endOf('week');
 
-  const weekNumber =
-    week -
-    moment(start)
-      .startOf('month')
-      .week();
+  const weekNumber = week - moment(start).startOf('month').week();
 
   const hoursDone = moment.duration(0);
-  const weeklyHours = Number(
-    JSON.parse(localStorage.getItem('options') as string).weeklyHours,
-  );
+  const weeklyHours = Number(hours);
   const weeklyDuration = moment.duration(weeklyHours, 'hours');
 
   for (let i = moment(start); i < end; i.add(1, 'd')) {
     const daySign = signings[i.format('DD-MM-YYYY')];
-    if (daySign) {
-      const signIn = moment(daySign.in);
-      const signOut = moment(daySign.out);
+
+    if (daySign?.holiday) {
+      hoursDone.add(moment.duration(weeklyHours / 5, 'hours'));
+    } else {
+      const signIn = moment(daySign?.in);
+      const signOut = moment(daySign?.out);
 
       const duration = moment.duration(signOut.diff(signIn));
       hoursDone.add(duration);

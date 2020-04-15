@@ -4,11 +4,13 @@ import {
   SIGN_OUT,
   SIGN_INITIALIZATION,
   SIGN_UPDATE,
+  SET_HOLIDAY,
 } from './types';
 
 interface StateSignature {
   in?: number;
   out?: number;
+  holiday: boolean;
 }
 
 interface StateSignings {
@@ -48,10 +50,11 @@ const signReducer = (
 
     case SIGN_INITIALIZATION: {
       const signings: StateSignings = {};
-      action.payload.forEach(signature => {
+      action.payload.forEach((signature) => {
         signings[signature.date] = {
           in: signature.in,
           out: signature.out,
+          holiday: signature.holiday || false,
         };
       });
       return signings;
@@ -78,6 +81,18 @@ const signReducer = (
       } else if (signOut) {
         entry = { ...entry, out: signOut.valueOf() };
       }
+
+      return { ...state, [formatDate]: entry };
+    }
+
+    case SET_HOLIDAY: {
+      const {
+        payload: { date, holiday },
+      } = action;
+      const formatDate = date.format('DD-MM-YYYY');
+
+      let entry = state[formatDate];
+      entry = { holiday };
 
       return { ...state, [formatDate]: entry };
     }

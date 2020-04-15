@@ -2,6 +2,10 @@ import React, { useEffect, useRef, useLayoutEffect } from 'react';
 import classNames from 'classnames';
 import { useMediaQuery } from '@app/hooks';
 import { SignTimes } from '@app/components';
+import { useSelector } from 'react-redux';
+import { RootState } from '@app/reducers';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCalendarTimes } from '@fortawesome/free-solid-svg-icons';
 import { ReportCellViewProps } from '../../index.d';
 import styles from './styles.module.css';
 
@@ -12,6 +16,11 @@ const ReportCellDesktop: React.FC<ReportCellViewProps> = ({
 }) => {
   const { sm } = useMediaQuery();
   const ref = useRef<HTMLDivElement>(null);
+
+  const holiday = useSelector(
+    (state: RootState) =>
+      state.signings[day.format('DD-MM-YYYY')]?.holiday,
+  );
 
   const updateHeight = () => {
     const button = ref.current as HTMLDivElement;
@@ -39,12 +48,18 @@ const ReportCellDesktop: React.FC<ReportCellViewProps> = ({
         ref={ref}
         className={classNames(styles.cell, styles.date, {
           [styles.weekend]: isWeekend,
-          [styles.disabled]: disabled,
+          [styles.disabled]: disabled || holiday,
           [styles.sm]: sm,
         })}
       >
         <div className={styles.dayName}>{day.format('ddd')}</div>
-        {!disabled && (
+        {holiday && (
+          <FontAwesomeIcon
+            className={styles.icon}
+            icon={faCalendarTimes}
+          />
+        )}
+        {!disabled && !holiday && (
           <SignTimes
             day={day}
             className={classNames({

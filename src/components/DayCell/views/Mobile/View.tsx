@@ -1,10 +1,18 @@
 import React from 'react';
 import { Accordion } from 'react-bootstrap';
 import classNames from 'classnames';
-import { SignButtons, HoursTracker } from '@app/components';
+import {
+  SignButtons,
+  HoursTracker,
+  SignForm,
+  HolidayButton,
+} from '@app/components';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCalendarTimes } from '@fortawesome/free-solid-svg-icons';
+import { useSelector } from 'react-redux';
+import { RootState } from '@app/reducers';
 import { DayCellViewProps } from '../../index.d';
 import styles from './styles.module.css';
-import SignForm from '@app/components/SignForm/View';
 
 const DayCellMobileView: React.FC<DayCellViewProps> = ({
   day,
@@ -12,6 +20,11 @@ const DayCellMobileView: React.FC<DayCellViewProps> = ({
   isWeekend,
 }) => {
   const eventKey = day.format('DD-MM-YYYY');
+
+  const holiday = useSelector(
+    (state: RootState) =>
+      state.signings[day.format('DD-MM-YYYY')]?.holiday,
+  );
 
   return (
     <div
@@ -44,15 +57,35 @@ const DayCellMobileView: React.FC<DayCellViewProps> = ({
           />
           <div className={styles.afterSeparator} />
         </div>
-        <HoursTracker day={day} />
+        {holiday ? (
+          <FontAwesomeIcon
+            className={styles.holiday}
+            icon={faCalendarTimes}
+          />
+        ) : (
+          <HoursTracker day={day} />
+        )}
       </Accordion.Toggle>
       <Accordion.Collapse eventKey={eventKey}>
-        <div className={classNames(styles.body, 'border-top')}>
-          {today && <SignButtons day={day} />}
-          {today && (
-            <div className={styles.formSeparator}>Manual</div>
+        <div
+          className={classNames(styles.body, 'border-top', {
+            'text-center': holiday,
+          })}
+        >
+          {!holiday && (
+            <React.Fragment>
+              {today && <SignButtons day={day} />}
+              {today && (
+                <div className={styles.formSeparator}>Manual</div>
+              )}
+              <SignForm day={day} />
+              <div className={styles.formSeparator} />
+            </React.Fragment>
           )}
-          <SignForm day={day} />
+          <HolidayButton variant='outline-dark' day={day} block>
+            {' '}
+            {holiday ? 'Laboral' : 'Festivo'}
+          </HolidayButton>
         </div>
       </Accordion.Collapse>
     </div>

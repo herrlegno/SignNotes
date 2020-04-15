@@ -4,6 +4,7 @@ export interface Signature {
   date: string;
   in?: number;
   out?: number;
+  holiday?: boolean;
 }
 
 type SignatureUpdatesObject = Omit<Signature, 'date'>;
@@ -13,7 +14,7 @@ class SigningDatabase extends Dexie {
 
   constructor() {
     super('SigningDatabase');
-    this.version(1).stores({
+    this.version(2).stores({
       signings: 'date',
     });
 

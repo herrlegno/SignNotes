@@ -5,10 +5,20 @@ import React, {
   useLayoutEffect,
 } from 'react';
 import { Modal, Button, Accordion, Card } from 'react-bootstrap';
-import { SignForm, SignButtons, HoursTracker } from '@app/components';
+import {
+  SignForm,
+  SignButtons,
+  HoursTracker,
+  HolidayButton,
+} from '@app/components';
 import classNames from 'classnames';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
+import {
+  faChevronDown,
+  faCalendarTimes,
+} from '@fortawesome/free-solid-svg-icons';
+import { useSelector } from 'react-redux';
+import { RootState } from '@app/reducers';
 import { DayCellViewProps } from '../../index.d';
 import styles from './styles.module.css';
 
@@ -20,6 +30,11 @@ const DayCellDesktop: React.FC<DayCellViewProps> = ({
 }) => {
   const [show, setShow] = useState<boolean>(false);
   const ref = useRef<HTMLButtonElement>(null);
+
+  const holiday = useSelector(
+    (state: RootState) =>
+      state.signings[day.format('DD-MM-YYYY')]?.holiday,
+  );
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -62,32 +77,45 @@ const DayCellDesktop: React.FC<DayCellViewProps> = ({
       </button>
       <Modal show={show} onHide={handleClose} centered>
         <Modal.Header closeButton>
-          <Modal.Title>{day.format('ll')}</Modal.Title>
+          <HolidayButton variant='outline-dark' day={day} />
+          <Modal.Title className={styles.title}>
+            {day.format('ll')}
+          </Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <div className={styles.body}>
-            <HoursTracker day={day} />
-            {today && <SignButtons day={day} />}
-            <Accordion className={styles.accordion}>
-              <Card>
-                <Accordion.Toggle
-                  as={Card.Header}
-                  className={styles.accordionHeader}
-                  eventKey='0'
-                >
-                  Manual
-                  <FontAwesomeIcon
-                    icon={faChevronDown}
-                    className={styles.icon}
-                  />
-                </Accordion.Toggle>
-                <Accordion.Collapse eventKey='0'>
-                  <Card.Body>
-                    <SignForm day={day} />
-                  </Card.Body>
-                </Accordion.Collapse>
-              </Card>
-            </Accordion>
+            {holiday && (
+              <FontAwesomeIcon
+                className={styles.holiday}
+                icon={faCalendarTimes}
+              />
+            )}
+            {!holiday && (
+              <React.Fragment>
+                <HoursTracker day={day} />
+                {today && !holiday && <SignButtons day={day} />}
+                <Accordion className={styles.accordion}>
+                  <Card>
+                    <Accordion.Toggle
+                      as={Card.Header}
+                      className={styles.accordionHeader}
+                      eventKey='0'
+                    >
+                      Manual
+                      <FontAwesomeIcon
+                        icon={faChevronDown}
+                        className={styles.icon}
+                      />
+                    </Accordion.Toggle>
+                    <Accordion.Collapse eventKey='0'>
+                      <Card.Body>
+                        <SignForm day={day} />
+                      </Card.Body>
+                    </Accordion.Collapse>
+                  </Card>
+                </Accordion>
+              </React.Fragment>
+            )}
           </div>
         </Modal.Body>
         <Modal.Footer>
