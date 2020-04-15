@@ -12,14 +12,8 @@ import styles from './styles.module.css';
 const formatToHour = (date: number) => {
   const momentDate = moment(date);
   const format = [
-    momentDate
-      .hours()
-      .toString()
-      .padStart(2, '0'),
-    momentDate
-      .minutes()
-      .toString()
-      .padStart(2, '0'),
+    momentDate.hours().toString().padStart(2, '0'),
+    momentDate.minutes().toString().padStart(2, '0'),
   ].join(':');
 
   return format;
@@ -60,7 +54,7 @@ const SignForm: React.FC<SignFormProps> = ({ day }) => {
       };
 
       if (start) {
-        const startSign = start.split(':').map(i => Number(i));
+        const startSign = start.split(':').map((i) => Number(i));
         sign['in'] = day.clone().set({
           hour: startSign[0],
           minute: startSign[1],
@@ -70,7 +64,7 @@ const SignForm: React.FC<SignFormProps> = ({ day }) => {
       }
 
       if (end) {
-        const endSign = end.split(':').map(i => Number(i));
+        const endSign = end.split(':').map((i) => Number(i));
         sign['out'] = day.clone().set({
           hour: endSign[0],
           minute: endSign[1],

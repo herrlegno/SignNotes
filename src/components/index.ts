@@ -10,3 +10,4 @@ export { default as ReportCell } from './ReportCell';
 export { default as Report } from './Report';
 export { default as SignTimes } from './SignTimes';
 export { default as WeekReport } from './WeekReport';
+export { default as HolidayButton } from './HolidayButton';

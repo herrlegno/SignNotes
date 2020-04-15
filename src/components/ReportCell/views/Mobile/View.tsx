@@ -1,6 +1,10 @@
 import React from 'react';
 import classNames from 'classnames';
 import { SignTimes } from '@app/components';
+import { useSelector } from 'react-redux';
+import { RootState } from '@app/reducers';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCalendarTimes } from '@fortawesome/free-solid-svg-icons';
 import { ReportCellViewProps } from '../../index.d';
 import styles from './styles.module.css';
 
@@ -8,6 +12,11 @@ const ReportCellMobileView: React.FC<ReportCellViewProps> = ({
   day,
   isWeekend,
 }) => {
+  const holiday = useSelector(
+    (state: RootState) =>
+      state.signings[day.format('DD-MM-YYYY')]?.holiday,
+  );
+
   return (
     <div
       className={classNames(
@@ -31,7 +40,13 @@ const ReportCellMobileView: React.FC<ReportCellViewProps> = ({
         <div className={styles.afterSeparator} />
       </div>
       <div>
-        <SignTimes day={day} className={styles.times} />
+        {holiday && (
+          <FontAwesomeIcon
+            className={styles.icon}
+            icon={faCalendarTimes}
+          />
+        )}
+        {!holiday && <SignTimes day={day} className={styles.times} />}
       </div>
     </div>
   );

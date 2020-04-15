@@ -9,6 +9,9 @@ import {
   SIGN_ERROR,
   SIGN_IN_REQUEST,
   SIGN_OUT_REQUEST,
+  SET_HOLIDAY,
+  SET_HOLIDAY_REQUEST,
+  SET_HOLIDAY_ERROR,
 } from './types';
 import db, { Signature } from '@app/config/db';
 import { Dispatch } from 'redux';
@@ -73,7 +76,7 @@ export function signIn(signature: SignPayload) {
             return dispatch(pushNotification(notification));
           });
       })
-      .catch(Dexie.ModifyError, e => {
+      .catch(Dexie.ModifyError, (e) => {
         dispatch(throwSignError());
         const notification: AddActionPayload = {
           type: 'error',
@@ -82,7 +85,7 @@ export function signIn(signature: SignPayload) {
 
         return dispatch(pushNotification(notification));
       })
-      .catch(Error, e => {
+      .catch(Error, (e) => {
         dispatch(throwSignError());
         const notification: AddActionPayload = {
           type: 'error',
@@ -130,7 +133,7 @@ export function signOut(signature: SignPayload) {
             return dispatch(pushNotification(notification));
           });
       })
-      .catch(Dexie.ModifyError, e => {
+      .catch(Dexie.ModifyError, (e) => {
         dispatch(throwSignError());
         const notification: AddActionPayload = {
           type: 'error',
@@ -139,7 +142,7 @@ export function signOut(signature: SignPayload) {
 
         return dispatch(pushNotification(notification));
       })
-      .catch(e => {
+      .catch((e) => {
         dispatch(throwSignError());
         const notification: AddActionPayload = {
           type: 'error',
@@ -164,7 +167,7 @@ export function getSignatures() {
   return (dispatch: Dispatch) => {
     return db.signings
       .toArray()
-      .then(signatures => dispatch(signInitialization(signatures)));
+      .then((signatures) => dispatch(signInitialization(signatures)));
   };
 }
 
@@ -206,7 +209,7 @@ export function signUpdate(signature: SignUpdatePayload) {
               return dispatch(pushNotification(notification));
             });
         })
-        .catch(Dexie.ModifyError, e => {
+        .catch(Dexie.ModifyError, (e) => {
           dispatch(throwSignError());
           const notification: AddActionPayload = {
             type: 'error',
@@ -215,7 +218,7 @@ export function signUpdate(signature: SignUpdatePayload) {
 
           return dispatch(pushNotification(notification));
         })
-        .catch(Error, e => {
+        .catch(Error, (e) => {
           dispatch(throwSignError());
           const notification: AddActionPayload = {
             type: 'error',
@@ -254,7 +257,7 @@ export function signUpdate(signature: SignUpdatePayload) {
               dispatch(pushNotification(notification));
             });
         })
-        .catch(Error, e => {
+        .catch(Error, (e) => {
           dispatch(throwSignError());
           const notification: AddActionPayload = {
             type: 'error',
@@ -293,7 +296,7 @@ export function signUpdate(signature: SignUpdatePayload) {
               dispatch(pushNotification(notification));
             });
         })
-        .catch(Error, e => {
+        .catch(Error, (e) => {
           dispatch(throwSignError());
           const notification: AddActionPayload = {
             type: 'error',
@@ -316,5 +319,82 @@ function setSignUpdate(signature: SignUpdatePayload): SignActionType {
 function throwSignError(): SignActionType {
   return {
     type: SIGN_ERROR,
+  };
+}
+
+function setHolidayAction(signature: SignPayload, holiday: boolean) {
+  return {
+    type: SET_HOLIDAY,
+    payload: { ...signature, holiday },
+  };
+}
+
+function setHolidayRequest() {
+  return {
+    type: SET_HOLIDAY_REQUEST,
+  };
+}
+
+function throwSetHolidayError() {
+  return {
+    type: SET_HOLIDAY_ERROR,
+  };
+}
+
+export function setHoliday(signature: SignPayload, holiday: boolean) {
+  return (dispatch: Dispatch) => {
+    const { date } = signature;
+    const formatDate = date.format('DD-MM-YYYY');
+
+    dispatch(setHolidayRequest());
+
+    return db.signings
+      .add({
+        date: formatDate,
+        holiday,
+      })
+      .then(() => {
+        dispatch(setHolidayAction(signature, holiday));
+        const notification: AddActionPayload = {
+          type: 'success',
+          message: `Festivo ${holiday ? 'añadido' : 'quitado'}!`,
+        };
+
+        return dispatch(pushNotification(notification));
+      })
+      .catch('ConstraintError', () => {
+        return db.signings
+          .put({
+            date: formatDate,
+            holiday,
+          })
+          .then(() => {
+            dispatch(setHolidayAction(signature, holiday));
+            const notification: AddActionPayload = {
+              type: 'success',
+              message: `Festivo ${holiday ? 'añadido' : 'quitado'}!`,
+            };
+
+            return dispatch(pushNotification(notification));
+          });
+      })
+      .catch(Dexie.ModifyError, (e) => {
+        dispatch(throwSetHolidayError());
+        const notification: AddActionPayload = {
+          type: 'error',
+          message: e.failures[0].message,
+        };
+
+        return dispatch(pushNotification(notification));
+      })
+      .catch(Error, (e) => {
+        dispatch(throwSetHolidayError());
+        const notification: AddActionPayload = {
+          type: 'error',
+          message: e.message,
+        };
+
+        return dispatch(pushNotification(notification));
+      });
   };
 }
